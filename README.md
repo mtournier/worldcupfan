@@ -8,8 +8,8 @@ Proyecto individual — *Taller de Desarrollo Mobile y GenAI*, Analista en TI (U
 
 ## 📱 Demo
 
+- **Demo web:** **[Abrir la app](https://mtournier.github.io/worldcupfan/www/)** — corre en el navegador (desktop o mobile), sin instalar nada.
 - **APK (Android):** [`app-debug.apk`](./app-debug.apk) — descargá e instalá en tu teléfono.
-- **Demo web:** _(pendiente — se agrega si la API de la cátedra está online)_
 
 > Para instalar el APK: descargalo en el teléfono y habilitá "Instalar apps de orígenes desconocidos" para el navegador o gestor de archivos.
 
