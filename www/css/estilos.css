@@ -1,0 +1,37 @@
+/* Obligatorio - Taller de Desarrollo Mobile y GenAi - Matias Tournier - 262646 */
+
+:root {
+  /* ---- Color PRIMARIO: ---- */
+  --ion-color-primary: #2e7d32;
+  --ion-color-primary-rgb: 46, 125, 50;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #286e2c;           
+  --ion-color-primary-tint: #438946;
+
+  /* ---- Color SECUNDARIO: dorado ---- */
+  --ion-color-secondary: #f9a825;
+  --ion-color-secondary-rgb: 249, 168, 37;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #db9421;
+  --ion-color-secondary-tint: #fab03b;
+}
+
+/* Icono del trofeo en el header centralizado */
+.icono-trofeo {
+  font-size: 30px;
+  vertical-align: middle;
+}
+
+.item-activo {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+}
+
+#map { height: 100%; }
+
+/* Espacio al final del listado para poder scrollear hasta el último jugador */
+#listadoJugadores {
+    padding-bottom: 60px;
+}

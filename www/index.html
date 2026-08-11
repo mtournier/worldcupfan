@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<!-- Obligatorio - Taller de Desarrollo Mobile y GenAi - Matias Tournier - 262646 -->
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Cup Fan</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <link rel="stylesheet" href="css/estilos.css" />
+    
+    <!-- Set completo de Ionicons. -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+    <ion-app>
+        <ion-router id="ruteo">
+            <ion-route url="/" component="page-home"></ion-route>
+            <ion-route url="/registro" component="page-registro"></ion-route>
+            <ion-route url="/login" component="page-login"></ion-route>
+            <ion-route url="/agregarJugador" component="page-agregarJugador"></ion-route>
+            <ion-route url="/listadoJugadores" component="page-listadoJugadores"></ion-route>
+            <ion-route url="/mapaUsuarios" component="page-mapaUsuarios"></ion-route>
+        </ion-router>
+
+        <ion-nav></ion-nav>
+
+        <!-- MENU -->
+        <ion-menu side="start" menu-id="first" content-id="main" id="menu">
+            <ion-header>
+                <ion-toolbar color="light">
+                    <ion-title>Menu</ion-title>
+                </ion-toolbar>
+            </ion-header>
+
+            <ion-content>
+                <ion-list id="menuOpciones"></ion-list>
+            </ion-content>
+        </ion-menu>
+
+        <div id="main"></div>
+
+        <!-- PANTALLAS -->
+
+        <!-- PANTALLA HOME -->
+        <page-home class="ion-page" id="pantalla-home">
+            <ion-header>
+                <ion-toolbar color="light">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title mode="ios" class="ion-text-center">
+                        <ion-router-link href="/">
+                            <ion-icon name="trophy" color="warning" class="icono-trofeo"></ion-icon>
+                        </ion-router-link>
+                    </ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding ion-text-center">
+                <h1>World Cup Fan ⚽</h1>
+
+                <div id="home-deslogueado">
+                    <h2>Seguí de cerca a tus jugadores favoritos del Mundial</h2>
+                    <p><ion-router-link href="/registro">Registrate</ion-router-link> para empezar a armar tu lista de jugadores.</p>
+                    <p>¿Ya tenés cuenta? <ion-router-link href="/login">Iniciá sesión</ion-router-link></p>
+                </div>
+
+                <div id="home-logueado" style="display: none;">
+                    <h2>¡Hola de nuevo!</h2>
+                    <p>Ya podés <ion-router-link href="/agregarJugador">agregar jugadores</ion-router-link>, ver tu <ion-router-link href="/listadoJugadores">listado</ion-router-link> o el <ion-router-link href="/mapaUsuarios">mapa de usuarios</ion-router-link>.</p>
+                    <ion-button expand="block" id="btnCerrarSesionHome">Cerrar Sesión</ion-button>
+                </div>
+            </ion-content>
+        </page-home>
+
+        <!-- PANTALLA REGISTRO -->
+        <page-registro class="ion-page" id="pantalla-registro">
+            <ion-header>
+                <ion-toolbar color="light">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+
+                    <ion-title mode="ios" class="ion-text-center">
+                        <ion-router-link href="/">
+                            <ion-icon name="trophy" color="warning" class="icono-trofeo"></ion-icon>
+                        </ion-router-link>
+                    </ion-title>
+                </ion-toolbar>
+            </ion-header>
+
+            <ion-content class="ion-padding ion-text-center">
+                <h1>Crear cuenta</h1>
+                <p>Ingresá tus datos y tu país de residencia para comenzar.</p>
+                <ion-list>
+                    <ion-item>
+                        <ion-input label="Usuario" id="txtRegistroUsuario" label-placement="floating"
+                            placeholder="Ingrese su nombre de usuario"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-input label="Contraseña" id="txtRegistroPass" type="password" label-placement="floating" placeholder="Ingrese su contraseña"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-select label="País" id="slcPais" placeholder="Seleccione su país"></ion-select>
+                    </ion-item>
+
+                    <ion-button expand="block" id="btnRegistrar">Registrarse</ion-button>
+                </ion-list>
+
+                <p>¿Ya tenés cuenta? <ion-router-link href="/login">Iniciá sesión</ion-router-link></p>
+            </ion-content>
+        </page-registro>
+
+        <!-- PANTALLA LOGIN -->
+        <page-login class="ion-page" id="pantalla-login">
+            <ion-header>
+                <ion-toolbar color="light">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+
+                    <ion-title mode="ios" class="ion-text-center">
+                        <ion-router-link href="/">
+                            <ion-icon name="trophy" color="warning" class="icono-trofeo"></ion-icon>
+                        </ion-router-link>
+                    </ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding ion-text-center">
+                <h1>Iniciar sesión</h1>
+                <p>Ingresá con tu usuario y contraseña para continuar.</p>
+                <ion-list>
+                    <ion-item>
+                        <ion-input label="Usuario" id="txtLoginUsuario" label-placement="floating" placeholder="Ingrese su nombre de usuario"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-input label="Contraseña" id="txtLoginPass" type="password" label-placement="floating" placeholder="Ingrese su contraseña"></ion-input>
+                    </ion-item>
+
+                    <ion-button expand="block" id="btnLogin">Iniciar sesión</ion-button>
+                </ion-list>
+
+                <p>¿No tenés cuenta? <ion-router-link href="/registro">Registrate</ion-router-link></p>
+            </ion-content>
+        </page-login>
+
+        <!-- PANTALLA AGREGAR JUGADOR -->
+        <page-agregarJugador class="ion-page" id="pantalla-agregarJugador">
+            <ion-header>
+                <ion-toolbar color="light">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+
+                    <ion-title mode="ios" class="ion-text-center">
+                        <ion-router-link href="/">
+                            <ion-icon name="trophy" color="warning" class="icono-trofeo"></ion-icon>
+                        </ion-router-link>
+                    </ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding ion-text-center">
+                <h1>Agregar jugador</h1>
+                <p>Registrá un nuevo jugador del Mundial para seguir su rendimiento.</p>
+                <ion-list>
+                    <ion-item>
+                        <ion-select label="Selección" id="slcSeleccion"
+                            placeholder="Seleccione la selección"></ion-select>
+                    </ion-item>
+                    <ion-item>
+                        <ion-input label="Nombre" id="txtNombreJugador" label-placement="floating"
+                            placeholder="Nombre completo del jugador"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-select label="Posición" id="slcPosicion"
+                            placeholder="Seleccione la posición"></ion-select>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>Fecha de nacimiento</ion-label>
+                        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+                    </ion-item>
+                    <ion-modal>
+                        <ion-datetime id="datetime" presentation="date"></ion-datetime>
+                    </ion-modal>
+                    <ion-item>
+                        <ion-textarea label="Comentario" id="txtComentario" label-placement="floating"
+                            placeholder="Escribí un comentario sobre el jugador"></ion-textarea>
+                    </ion-item>
+
+                    <ion-button expand="block" id="btnAgregarJugador">Agregar jugador</ion-button>
+                </ion-list>
+            </ion-content>
+        </page-agregarJugador>
+
+        <!-- PANTALLA LISTADO DE JUGADORES -->
+        <page-listadoJugadores class="ion-page" id="pantalla-listadoJugadores">
+            <ion-header>
+                <ion-toolbar color="light">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+
+                    <ion-title mode="ios" class="ion-text-center">
+                        <ion-router-link href="/">
+                            <ion-icon name="trophy" color="warning" class="icono-trofeo"></ion-icon>
+                        </ion-router-link>
+                    </ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding ion-text-center">
+                <h1>Mis jugadores</h1>
+                <p>Estos son los jugadores que registraste. Podés filtrarlos por selección o eliminarlos.</p>
+
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title>Estadísticas</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <p>Selección favorita: <span id="statSeleccionFavorita">—</span></p>
+                        <p>Mayoría de jugadores: <span id="statTipoMayoria">—</span></p>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-item>
+                    <ion-select label="Filtrar por selección" id="slcFiltro"></ion-select>
+                </ion-item>
+
+                <div id="listadoJugadores"></div>
+            </ion-content>
+        </page-listadoJugadores>
+
+        <!-- PANTALLA MAPA DE USUARIOS -->
+        <page-mapaUsuarios class="ion-page" id="pantalla-mapaUsuarios">
+            <ion-header>
+                <ion-toolbar color="light">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+
+                    <ion-title mode="ios" class="ion-text-center">
+                        <ion-router-link href="/">
+                            <ion-icon name="trophy" color="warning" class="icono-trofeo"></ion-icon>
+                        </ion-router-link>
+                    </ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding ion-text-center">
+                <h1>Top 10 países con más usuarios</h1>
+                <div id="map"></div>
+            </ion-content>
+        </page-mapaUsuarios>
+    </ion-app>
+
+    <script src="js/codigo.js"></script>
+</body>
+
+</html>
